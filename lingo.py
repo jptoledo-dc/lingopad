@@ -123,7 +123,7 @@ with st.sidebar:
     with st.expander(f"⚡ Tradutor Rápido ({idioma})", expanded=False):
         texto_traduzir = st.text_input("Digite a frase ou palavra:", key="quick_translate", placeholder=f"Ex: Frase em {idioma}...")
         
-        if st.button("Ouvir e Traduzir", use_container_width=True):
+        if st.button("Ouvir e Traduzir", width='stretch'):
             if texto_traduzir.strip():
                 with st.spinner("Traduzindo..."):
                     try:
@@ -172,7 +172,7 @@ if nav == "📊 Dashboard Analítico":
     if not df_xp.empty and df_xp["XP Ganho"].sum() > 0:
         fig = px.bar(df_xp, x="Data", y="XP Ganho", text_auto=True, color="XP Ganho", color_continuous_scale="Blues")
         fig.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", font_color="white")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
     else:
         st.info("Complete lições para gerar gráficos de progresso!")
 
@@ -193,16 +193,16 @@ elif nav == "🃏 Flashcards":
         card = st.session_state.current_fc
         if not st.session_state.show_ans:
             st.markdown(f'<div class="flashcard">{card["palavra"]}</div>', unsafe_allow_html=True)
-            if st.button("🔄 Revelar Resposta", use_container_width=True, type="primary"):
+            if st.button("🔄 Revelar Resposta", width='stretch', type="primary"):
                 st.session_state.show_ans = True
                 st.rerun()
         else:
             st.markdown(f'<div class="flashcard" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"><span style="font-size:1.2rem;">Tradução:</span><br>{card["traducao"]}<br><span style="font-size:1.2rem; font-style:italic;">{card["exemplo"]}</span></div>', unsafe_allow_html=True)
             col1, col2 = st.columns(2)
-            if col1.button("❌ Errei / Esqueci", use_container_width=True):
+            if col1.button("❌ Errei / Esqueci", width='stretch'):
                 st.session_state.pop('current_fc')
                 st.rerun()
-            if col2.button("✅ Lembrei (10 XP)", use_container_width=True):
+            if col2.button("✅ Lembrei (10 XP)", width='stretch'):
                 add_xp(10)
                 st.session_state.pop('current_fc')
                 st.rerun()
@@ -213,7 +213,7 @@ elif nav == "🃏 Flashcards":
 elif nav == "📖 Leitura & Áudio":
     st.header(f"Estudo Base: {idioma} ({nivel_global})")
     
-    if st.button("✨ Gerar Texto e Áudio", type="primary", use_container_width=True):
+    if st.button("✨ Gerar Texto e Áudio", type="primary", width='stretch'):
         with st.spinner("Gerando conteúdo exclusivo..."):
             prompt = f'Crie um texto original em {idioma} nível {nivel_global} (~100 palavras). Retorne JSON: {{"texto": "...", "perguntas": [{{"pergunta": "...", "opcoes": ["A", "B", "C", "D"], "resposta": "A"}}]}}'
             lesson = call_g4f_json(prompt)
@@ -244,7 +244,7 @@ elif nav == "🌍 Mundo Real":
     st.header("Estude com o que você ama")
     texto_livre = st.text_area("Cole seu texto original aqui (em qualquer idioma):", height=150)
     
-    if st.button("🚀 Adaptar e Criar Lição", type="primary", use_container_width=True):
+    if st.button("🚀 Adaptar e Criar Lição", type="primary", width='stretch'):
         if len(texto_livre) > 20:
             with st.spinner(f"Adaptando texto para {idioma}..."):
                 prompt = f'Traduza e adapte o texto a seguir para {idioma} estritamente no nível de fluência {nivel_global}. Crie 3 perguntas de múltipla escolha. Texto: "{texto_livre}". JSON: {{"texto_adaptado": "...", "perguntas": [{{"pergunta": "...", "opcoes": ["A", "B", "C", "D"], "resposta": "A"}}]}}'
@@ -297,7 +297,7 @@ elif nav == "🎙️ Avaliador de Voz":
 elif nav == "🚗 Modo Drive":
     st.header("Modo Direção (Mãos no volante!)")
     
-    if st.button("🎧 Iniciar Sessão Hands-Free", type="primary", use_container_width=True):
+    if st.button("🎧 Iniciar Sessão Hands-Free", type="primary", width='stretch'):
         with st.spinner("Sintetizando podcast..."):
             prompt = f'Crie 5 frases úteis em {idioma} nível {nivel_global}. JSON: {{"frases": [{{"alvo": "frase no idioma", "pt": "tradução"}}]}}'
             frases = call_g4f_json(prompt)
@@ -324,7 +324,7 @@ elif nav == "🚗 Modo Drive":
 elif nav == "📄 Gerar Apostila (PDF)":
     st.header("Exporte seus Estudos")
     
-    if st.button("🖨️ Gerar Apostila em PDF", type="primary", use_container_width=True):
+    if st.button("🖨️ Gerar Apostila em PDF", type="primary", width='stretch'):
         db = st.session_state.user_data
         
         if not db["saved_texts"] and not db["review_words"]:
@@ -386,6 +386,6 @@ elif nav == "📄 Gerar Apostila (PDF)":
                         data=file,
                         file_name=f"LingoTablet_Apostila_{date.today()}.pdf",
                         mime="application/pdf",
-                        use_container_width=True
+                        width='stretch'
                     )
                 add_xp(15)
