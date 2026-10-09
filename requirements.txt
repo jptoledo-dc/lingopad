@@ -1,0 +1,10 @@
+streamlit
+g4f
+edge-tts
+asyncio
+nest-asyncio
+pandas
+plotly
+fpdf2
+streamlit-mic-recorder
+SpeechRecognition
